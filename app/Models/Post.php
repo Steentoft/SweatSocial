@@ -10,7 +10,13 @@ class Post extends Model
     protected $fillable = [
         'user_id',
         'group_id',
-        'post_type',
-        'content'
+        'content',
+        'likes',
+        'linkable_id',
+        'linkable_type',
     ];
+
+    public function linkable() {
+        return $this->morphTo();
+    }
 }

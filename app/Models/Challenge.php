@@ -12,4 +12,9 @@ class Challenge extends Model
         'challenge_description',
         'start_date',
         'end_date'
-    ];}
+    ];
+
+    public function posts() {
+        return $this->morphMany(Post::class, 'linkable');
+    }
+}

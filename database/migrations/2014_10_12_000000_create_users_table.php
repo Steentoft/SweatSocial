@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->date('birthdate');
+            $table->string('profile_image_path')->nullable();
             $table->string('biography')->nullable();
             $table->float('height')->nullable();
             $table->float('weight')->nullable();

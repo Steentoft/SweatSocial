@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('mealplans', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('description')->nullable();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('group_id')->nullable()->constrained('groups');
-            $table->string('content');
-            $table->integer('linkable_id')->nullable();
-            $table->enum('linkable_type', ['groups', 'workouts', 'mealplans', 'events', 'challenges'])->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('mealplans');
     }
 };

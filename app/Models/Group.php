@@ -13,4 +13,8 @@ class Group extends Model
         'group_description',
         'locked'
     ];
+
+    public function posts() {
+        return $this->morphMany(Post::class, 'linkable');
+    }
 }

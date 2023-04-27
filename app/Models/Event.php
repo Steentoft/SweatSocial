@@ -16,4 +16,8 @@ class Event extends Model
         'event_type',
         'max_participants'
     ];
+
+    public function posts() {
+        return $this->morphMany(Post::class, 'linkable');
+    }
 }

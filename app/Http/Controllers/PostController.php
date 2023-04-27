@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Validator;
 
 class PostController extends BaseController
 {
@@ -12,7 +14,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        //
+        return $this->sendResponse(PostResource::collection(Post::all()), 'Posts fetched.');
     }
 
     /**
@@ -20,7 +22,29 @@ class PostController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $input = $request->only(['user_id', 'group_id', 'content', 'linkable_id', 'linkable_type']);
+
+            $validation = Validator::make($input,
+                [
+                    'user_id' => 'required',
+                    'content' => 'required',
+                ]);
+
+            if($validation->fails()){
+                return $this->sendError('Validation error.', $validation->errors());
+            }
+
+            $post = Post::create($input);
+
+            return $this->sendResponse($post, 'Post created.');
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
