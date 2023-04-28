@@ -35,9 +35,14 @@ class PostController extends BaseController
                 return $this->sendError('Validation error.', $validation->errors());
             }
 
+
             $post = Post::create($input);
 
-            return $this->sendResponse($post, 'Post created.');
+            if ($request->has('tags')){
+                $post->tags()->sync($request->get('tags'));
+            }
+
+            return $this->sendResponse(new PostResource($post), 'Post created.');
 
         } catch (\Throwable $th) {
             return response()->json([

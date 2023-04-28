@@ -14,4 +14,8 @@ class FitnessCenter extends Model
         'center_facilities',
         'contact_info'
     ];
+
+    public function event(){
+        return $this->belongsTo(Event::class);
+    }
 }

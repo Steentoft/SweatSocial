@@ -9,4 +9,13 @@ class Exercise extends Model
 {
     protected $fillable = [
         'exercise_name',
-    ];}
+    ];
+
+    public function workout(){
+        return $this->belongsToMany(Workout::class);
+    }
+
+    public function sessionData(){
+        return $this->hasMany(WorkoutSessionData::class);
+    }
+}

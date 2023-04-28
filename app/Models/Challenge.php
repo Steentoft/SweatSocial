@@ -17,4 +17,8 @@ class Challenge extends Model
     public function posts() {
         return $this->morphMany(Post::class, 'linkable');
     }
+
+    public function participants(){
+        return $this->belongsToMany(User::class, 'challenge_participants');
+    }
 }

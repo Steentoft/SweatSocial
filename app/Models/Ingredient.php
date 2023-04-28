@@ -11,4 +11,8 @@ class Ingredient extends Model
         'ingredient_name',
         'unit'
     ];
+
+    public function group(){
+        return $this->belongsTo(RecipeIngredient::class);
+    }
 }

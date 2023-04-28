@@ -20,4 +20,12 @@ class Event extends Model
     public function posts() {
         return $this->morphMany(Post::class, 'linkable');
     }
+
+    public function fitnessCenter(){
+        return $this->hasOne(FitnessCenter::class);
+    }
+
+    public function participants(){
+        return $this->belongsToMany(User::class, 'event_participants');
+    }
 }

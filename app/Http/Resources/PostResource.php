@@ -16,7 +16,12 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'post' => $this,
+            'post' => $this->content,
+            'linkable' => [
+                'linkable_id' => $this->linkable_id,
+                'linkable_type' => $this->linkable_type,
+            ],
+            'tags' => $this->tags,
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),
         ];

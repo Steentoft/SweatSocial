@@ -17,4 +17,8 @@ class Mealplan extends Model
     public function posts() {
         return $this->morphMany(Post::class, 'linkable');
     }
+
+    public function group(){
+        return $this->hasOne(User::class);
+    }
 }

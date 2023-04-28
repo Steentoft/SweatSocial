@@ -12,4 +12,13 @@ class Meal extends Model
         'meal_description',
         'recipe_id'
     ];
+
+    public function recipe(){
+        return $this->hasOne(Recipe::class);
+    }
+
+
+    public function mealplanMeal(){
+        return $this->belongsTo(MealplanMeal::class);
+    }
 }

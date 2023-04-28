@@ -19,4 +19,9 @@ class Post extends Model
     public function linkable() {
         return $this->morphTo();
     }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'post_tags');
+    }
+
 }

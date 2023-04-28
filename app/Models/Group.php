@@ -17,4 +17,12 @@ class Group extends Model
     public function posts() {
         return $this->morphMany(Post::class, 'linkable');
     }
+
+    public function owner(){
+        return $this->hasOne(User::class);
+    }
+
+    public function members(){
+        return $this->belongsToMany(User::class, 'group_members');
+    }
 }

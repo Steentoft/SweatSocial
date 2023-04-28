@@ -10,4 +10,8 @@ class Tag extends Model
     protected $fillable = [
         'tag_name',
     ];
+
+    public function workout(){
+        return $this->belongsToMany(Post::class);
+    }
 }

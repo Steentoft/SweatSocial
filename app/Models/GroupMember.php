@@ -9,6 +9,17 @@ class GroupMember extends Model
 {
     protected $fillable = [
         'group_id',
-        'user_id'
+        'user_id',
+        'invited'
     ];
+
+
+    public function group(){
+        return $this->hasOne(Group::class);
+    }
+
+    public function user(){
+        return $this->hasOne(User::class);
+    }
+
 }

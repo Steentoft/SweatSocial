@@ -13,4 +13,16 @@ class Comment extends Model
         'comment',
         'reply_id'
     ];
+
+    public function parentComment(){
+        return $this->hasMany(Comment::class, 'reply_id', 'id');
+    }
+
+    public function post(){
+        return $this->hasOne(Post::class);
+    }
+
+    public function user(){
+        return $this->hasOne(User::class);
+    }
 }
