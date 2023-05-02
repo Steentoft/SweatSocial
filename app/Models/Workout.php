@@ -17,4 +17,14 @@ class Workout extends Model
     public function posts() {
         return $this->morphMany(Post::class, 'linkable');
     }
+
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class, 'workout_exercises');
+    }
+
+    public function sessions()
+    {
+        return $this->belongsTo(WorkoutSession::class);
+    }
 }

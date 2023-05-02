@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rules\In;
 
 class RecipeIngredient extends Model
 {
@@ -12,4 +13,12 @@ class RecipeIngredient extends Model
         'ingredient_id',
         'quantity'
     ];
+
+    public function ingredient(){
+        return $this->hasOne(Ingredient::class);
+    }
+
+    public function recipe(){
+        return $this->hasOne(Recipe::class);
+    }
 }

@@ -18,7 +18,15 @@ class Mealplan extends Model
         return $this->morphMany(Post::class, 'linkable');
     }
 
-    public function group(){
+    public function user(){
         return $this->hasOne(User::class);
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class, 'mealplan_tags');
+    }
+
+    public function meals(){
+        return $this->belongsTo(MealplanMeal::class);
     }
 }

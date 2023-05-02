@@ -48,4 +48,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function posts(){
+        return $this->belongsTo(Post::class);
+    }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class, 'group_members');
+    }
+
+    public function mealplans(){
+        return $this->belongsTo(MealplanMeal::class);
+    }
+
+    public function meals(){
+        return $this->belongsTo(Meal::class);
+    }
+
+    public function recipes(){
+        return $this->belongsTo(Recipe::class);
+    }
+
+    public function events(){
+        return $this->belongsToMany(Event::class, 'event_participants');
+    }
+
+    public function challenges(){
+        return $this->belongsToMany(Challenge::class, 'challenge_participants');
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }

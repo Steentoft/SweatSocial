@@ -11,4 +11,8 @@ class PostImage extends Model
         'post_id',
         'image_path',
     ];
+
+    public function post(){
+        return $this->hasOne(Post::class);
+    }
 }

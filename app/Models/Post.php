@@ -11,7 +11,6 @@ class Post extends Model
         'user_id',
         'group_id',
         'content',
-        'likes',
         'linkable_id',
         'linkable_type',
     ];
@@ -20,8 +19,28 @@ class Post extends Model
         return $this->morphTo();
     }
 
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
     public function tags(){
         return $this->belongsToMany(Tag::class, 'post_tags');
+    }
+
+    public function likes(){
+        return $this->belongsToMany(User::class, 'post_likes');
+    }
+
+    public function user(){
+        return $this->hasOne(User::class);
+    }
+
+    public function group(){
+        return $this->hasOne(Group::class);
+    }
+
+    public function images(){
+        return $this->hasMany(PostImage::class);
     }
 
 }

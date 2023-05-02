@@ -11,7 +11,15 @@ class Tag extends Model
         'tag_name',
     ];
 
-    public function workout(){
-        return $this->belongsToMany(Post::class);
+    public function post(){
+        return $this->belongsToMany(Post::class, 'post_tags');
+    }
+
+    public function interests(){
+        return $this->belongsToMany(User::class, 'user_interests');
+    }
+
+    public function mealplan(){
+        return $this->belongsToMany(Mealplan::class, 'mealplan_tags');
     }
 }
