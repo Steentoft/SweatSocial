@@ -22,4 +22,18 @@ class Tag extends Model
     public function mealplan(){
         return $this->belongsToMany(Mealplan::class, 'mealplan_tags');
     }
+
+    public static function retrieveTagIds($tags){
+        $newTagIds = [];
+
+        foreach($tags as $tag){
+            $tag_ = Tag::firstOrCreate([
+                'id' => $tag,
+                'tag_name' => $tag
+            ]);
+            array_push($newTagIds, $tag_->id);
+        }
+
+        return $newTagIds;
+    }
 }

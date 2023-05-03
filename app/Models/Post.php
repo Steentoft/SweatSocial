@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    use HasRelationships;
+
     protected $fillable = [
         'user_id',
         'group_id',
@@ -32,7 +34,7 @@ class Post extends Model
     }
 
     public function user(){
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function group(){
@@ -43,4 +45,13 @@ class Post extends Model
         return $this->hasMany(PostImage::class);
     }
 
+    public static function attachImages($images, $post_id){
+        foreach ($images as $image){
+            $path = $image->store('public');
+            PostImage::create([
+                'post_id' => $post_id,
+                'image_path' => $path
+            ]);
+        }
+    }
 }
