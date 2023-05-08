@@ -25,7 +25,7 @@ class PostController extends BaseController
     public function store(Request $request)
     {
         try {
-            $input = $request->only(['group_id', 'content', 'linkable_id', 'linkable_type']);
+            $input = $request->only(['group_id', 'friends_only', 'content', 'linkable_id', 'linkable_type']);
             $input['user_id'] = auth()->user()->id;
 
             $validation = Validator::make($input,

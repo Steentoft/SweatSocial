@@ -34,7 +34,7 @@ class AuthController extends Controller
             if($validateUser->fails()){
                 return response()->json([
                     'success' => false,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }
@@ -79,7 +79,7 @@ class AuthController extends Controller
             if($validateUser->fails()){
                 return response()->json([
                     'success' => false,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->errors()
                 ], 401);
             }

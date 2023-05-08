@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('group_id')->nullable()->constrained('groups');
+            $table->boolean('friends_only')->nullable();
             $table->string('content');
             $table->integer('linkable_id')->nullable();
             $table->enum('linkable_type', ['groups', 'workouts', 'mealplans', 'events', 'challenges'])->nullable();

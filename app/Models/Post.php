@@ -11,6 +11,7 @@ class Post extends Model
 
     protected $fillable = [
         'user_id',
+        'friends_only',
         'group_id',
         'content',
         'linkable_id',
