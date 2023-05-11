@@ -23,12 +23,12 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource('post',PostController::class);
-    Route::apiResource('user',UserController::class);
+    Route::controller(UserController::class)->group(function ()
+    {
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+        Route::put("/user", "update");
+    });
     Route::apiResource('tags',TagController::class);
-});
-
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 });
