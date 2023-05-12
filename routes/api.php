@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,7 @@ Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::middleware('auth:sanctum')->group(function (){
+
     Route::apiResource('post',PostController::class);
     Route::controller(UserController::class)->group(function ()
     {
@@ -31,4 +33,8 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::put("/user", "update");
     });
     Route::apiResource('tags',TagController::class);
+    Route::apiResource('comment',CommentController::class);
+
 });
+
+Route::get('/post', [PostController::class, 'index']);

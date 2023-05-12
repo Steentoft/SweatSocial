@@ -16,7 +16,9 @@ class PostController extends BaseController
      */
     public function index()
     {
-        return $this->sendResponse(PostResource::collection(Post::all()), 'Posts fetched.');
+        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+
+        return $this->sendResponse(PostResource::collection($posts), 'Posts fetched.');
     }
 
     /**

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Validator;
 
-class CommentController extends Controller
+class CommentController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +22,33 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+
+            $validation = Validator::make($request->all(),
+                [
+                    'post_id' => 'required',
+                    'comment' => 'required',
+                ]);
+
+            if($validation->fails()){
+                return $this->sendError('Validation error.', $validation->errors());
+            }
+
+            $comment = Comment::create(array_merge(
+                $request->all(),
+                [
+                    'user_id' => auth()->id(),
+                ]
+            ));
+
+            return $this->sendResponse(new CommentResource($comment), 'Post created.');
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
