@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     image: mariadb:latest
-    #restart: always
+    restart: always
     environment:
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
       MARIADB_DATABASE: 'sweatsocial'

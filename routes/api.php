@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function (){
             return $request->user();
         });
         Route::put("/user", "update");
+        Route::post("/user/picture", "uploadPicture");
+        Route::get("/user/picture/{id}", "getPicture");
     });
     Route::apiResource('tags',TagController::class);
     Route::apiResource('comment',CommentController::class);
