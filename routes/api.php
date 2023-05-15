@@ -22,7 +22,7 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
-
+//Use auth
 Route::middleware('auth:sanctum')->group(function (){
 
     Route::apiResource('post',PostController::class);
@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function (){
             return $request->user();
         });
         Route::put("/user", "update");
+        Route::post("/user/picture", "uploadPicture");
     });
     Route::apiResource('tags',TagController::class);
     Route::apiResource('comment',CommentController::class);
@@ -39,7 +40,14 @@ Route::middleware('auth:sanctum')->group(function (){
 
 });
 
+//No auth
 Route::get('/post', [PostController::class, 'index']);
 
-Route::get('/post', [PostController::class, 'index']);
+Route::controller(CommentController::class)->group(function () {
+    Route::get("/post/{id}/comments", "index");
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get("/user/picture/{id}", "getPicture");
+});
 
