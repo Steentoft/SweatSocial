@@ -16,7 +16,7 @@ class CompactUserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->username,
+            'username' => $this->username,
             'image' => $this->profile_image_path,
             'created_at' => $this->created_at->format('m/d/Y'),
             'updated_at' => $this->updated_at->format('m/d/Y'),

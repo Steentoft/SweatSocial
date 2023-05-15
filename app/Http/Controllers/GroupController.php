@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\GroupResource;
+use App\Http\Resources\PostResource;
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Validator;
 
-class GroupController extends Controller
+class GroupController extends BaseController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $user = User::find(auth()->user()->id);
+
+        return GroupResource::collection($user->groups);
     }
 
     /**
@@ -20,7 +26,33 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validation = Validator::make($request->all(),
+                [
+                    'group_name' => 'required',
+                ]);
+
+            if($validation->fails()){
+                return $this->sendError('Validation error.', $validation->errors());
+            }
+
+            $group = Group::create(array_merge(
+                $request->all(),
+                [
+                    'group_owner_id' => auth()->user()->id,
+                ]
+            ));
+
+            $group->members()->attach(auth()->user()->id);
+
+            return $this->sendResponse(new GroupResource($group), 'Group created.');
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -28,7 +60,7 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        //
+        return new GroupResource($group);
     }
 
     /**

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('group_owner_id')->constrained('users');
             $table->string('group_name');
-            $table->string('group_description');
-            $table->boolean('locked');
+            $table->string('group_description')->nullable();
+            $table->boolean('locked')->default(0);
             $table->timestamps();
         });
     }

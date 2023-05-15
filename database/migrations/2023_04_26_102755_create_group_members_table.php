@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('group_id')->constrained('groups');
             $table->foreignId('user_id')->constrained('users');
-            $table->boolean('invited');
+            $table->boolean('invited')->default(0);
             $table->timestamps();
         });
     }
