@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -12,9 +13,11 @@ class CommentController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(int $id)
     {
-        //
+        $comments = Post::find($id)->comments()->orderBy('created_at', 'desc')->paginate(10);
+        
+        return $this->sendResponse(CommentResource::collection($comments), 'Comments fetched');
     }
 
     /**
