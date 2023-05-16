@@ -16,7 +16,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+        $posts = Post::where('group_id', null)->where('friends_only', 0)->orderBy('created_at', 'desc')->paginate(5);
 
         return $this->sendResponse(PostResource::collection($posts), 'Posts fetched.');
     }

@@ -26,6 +26,9 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:sanctum')->group(function (){
 
     Route::apiResource('post',PostController::class);
+    Route::get('/post/group/{group}', [PostController::class, 'invite']);
+
+
     Route::controller(UserController::class)->group(function ()
     {
         Route::get('/user', function (Request $request) {
@@ -36,8 +39,10 @@ Route::middleware('auth:sanctum')->group(function (){
     });
     Route::apiResource('tags',TagController::class);
     Route::apiResource('comment',CommentController::class);
-    Route::apiResource('group',GroupController::class);
 
+    Route::apiResource('group',GroupController::class);
+    Route::put('/group/invite/{group}', [GroupController::class, 'invite']);
+    Route::get('/invites/group', [GroupController::class, 'invitations']);
 });
 
 //No auth
