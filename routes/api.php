@@ -26,6 +26,9 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('post', PostController::class);
+    Route::get('/post/group/{group}', [PostController::class, 'invite']);
+
+    Route::apiResource('post', PostController::class);
     Route::controller(PostController::class)->group(function () {
         Route::get("/post/{id}/like", "like");
     });
@@ -41,8 +44,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/comment/{id}', 'destroy');
         Route::put('/comment/{id}', 'update');
     });
+
     Route::apiResource('tags', TagController::class);
+
     Route::apiResource('group', GroupController::class);
+    Route::put('/group/invite/{group}', [GroupController::class, 'invite']);
+    Route::get('/invites/group', [GroupController::class, 'invitations']);
 
 });
 
