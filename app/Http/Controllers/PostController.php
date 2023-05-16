@@ -71,6 +71,11 @@ class PostController extends BaseController
     {
         try {
             $post = Post::find($post);
+            $post->load([
+                'comments' => function ($query) {
+                    $query->orderBy('created_at', 'desc')->take(10);
+                }
+            ]);
 
             if ($post) {
                 return $this->sendResponse(new PostResource($post), 'Post retrieved.');

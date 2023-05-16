@@ -36,8 +36,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put("/user", "update");
         Route::post("/user/picture", "uploadPicture");
     });
+    Route::controller(CommentController::class)->group(function () {
+        Route::post('/post/{id}/comment', 'store');
+        Route::delete('/comment/{id}', 'destroy');
+        Route::put('/comment/{id}', 'update');
+    });
     Route::apiResource('tags', TagController::class);
-    Route::apiResource('comment', CommentController::class);
     Route::apiResource('group', GroupController::class);
 
 });
