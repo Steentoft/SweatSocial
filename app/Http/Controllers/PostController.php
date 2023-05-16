@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\PostImage;
 use App\Models\Tag;
+use Exception;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -30,24 +31,26 @@ class PostController extends BaseController
             $input = $request->only(['group_id', 'friends_only', 'content', 'linkable_id', 'linkable_type']);
             $input['user_id'] = auth()->user()->id;
 
-            $validation = Validator::make($input,
+            $validation = Validator::make(
+                $input,
                 [
                     'user_id' => 'required',
                     'content' => 'required',
                     'images' => 'image|mimes:jpeg,png,jpg'
-                ]);
+                ]
+            );
 
-            if($validation->fails()){
+            if ($validation->fails()) {
                 return $this->sendError('Validation error.', $validation->errors());
             }
 
             $post = Post::create($input);
 
-            if ($request->has('tags')){
+            if ($request->has('tags')) {
                 $post->tags()->attach(Tag::retrieveTagIds($request->get('tags')));
             }
 
-            if ($request->hasFile('images')){
+            if ($request->hasFile('images')) {
                 Post::attachImages($request->file('images'), $post->id);
             }
 
@@ -69,7 +72,7 @@ class PostController extends BaseController
         try {
             $post = Post::find($post);
 
-            if ($post){
+            if ($post) {
                 return $this->sendResponse(new PostResource($post), 'Post retrieved.');
             } else {
                 return $this->sendError('No matching post found.');
@@ -88,25 +91,27 @@ class PostController extends BaseController
      */
     public function update(Request $request, Post $post)
     {
-        if (auth()->user()->id != $post->user_id){
+        if (auth()->user()->id != $post->user_id) {
             return $this->sendError('You are not the owner of the requested resource.', 'Unauthenticated.');
         }
 
         try {
             $input = $request->only(['content', 'linkable_id', 'linkable_type']);
 
-            $validation = Validator::make($input,
+            $validation = Validator::make(
+                $input,
                 [
                     'content' => 'required',
-                ]);
+                ]
+            );
 
-            if($validation->fails()){
+            if ($validation->fails()) {
                 return $this->sendError('Validation error.', $validation->errors());
             }
 
             $post->update($input);
 
-            if ($request->has('tags')){
+            if ($request->has('tags')) {
                 $post->tags()->attach(Tag::retrieveTagIds($request->get('tags')));
             }
 
@@ -126,11 +131,11 @@ class PostController extends BaseController
     public function destroy($post)
     {
         $post = Post::find($post);
-        if (!$post){
+        if (!$post) {
             return $this->sendError('No matching post found.');
         }
 
-        if (auth()->user()->id != $post->user_id){
+        if (auth()->user()->id != $post->user_id) {
             return $this->sendError('You are not the owner of the requested resource.', 'Unauthenticated.');
         }
 
@@ -141,5 +146,24 @@ class PostController extends BaseController
 
         $post->delete();
         return $this->sendResponse([], 'Post deleted.');
+    }
+    public function like(int $id)
+    {
+        try {
+            $post = Post::find($id);
+            if (!$post->likes()->find(auth()->id())) {
+                $post->likes()->save(auth()->user());
+                return $this->sendResponse($post->likes()->count(), "Liked");
+            } else {
+                $post->likes()->detach(auth()->id());
+                $post->save();
+                return $this->sendError("Like removed");
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => "The post does not exist"
+            ], 500);
+        }
     }
 }

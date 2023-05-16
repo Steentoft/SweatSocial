@@ -47,7 +47,7 @@ class UserController extends Controller
             if (strrpos($th->getMessage(), "users_username_unique")) {
                 $message = "Must use a unique username";
             } elseif (strrpos($th->getMessage(), "users_email_unique")) {
-                    $message = "Must use a unique email";
+                $message = "Must use a unique email";
             }
             return response()->json([
                 'success' => false,
@@ -57,12 +57,12 @@ class UserController extends Controller
     }
     public function uploadPicture(Request $request)
     {
-        try{
+        try {
             $request->validate(["image" => "image|mimes:jpeg,png,jpg"]);
 
-           /* if($validation->fails()){
-                return $this->sendError('Validation error.', $validation->errors());
-            }*/
+            /* if($validation->fails()){
+                 return $this->sendError('Validation error.', $validation->errors());
+             }*/
             $user = User::find(auth()->user()->id);
             $image = $request->file('image');
             $path = $image->store('public');
@@ -77,20 +77,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function getPicture(Request $request, string $id)
-    {
-        try
-        {
-            $user = User::find($id);
-            return response()->file($user->profile_image_path);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
-    }
-
     /**
      * Remove the specified resource from storage.
      */
