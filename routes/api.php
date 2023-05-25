@@ -23,31 +23,46 @@ use App\Http\Controllers\AuthController;
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 //Use auth
-Route::middleware('auth:sanctum')->group(function (){
+Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResource('post',PostController::class);
-    Route::controller(UserController::class)->group(function ()
-    {
+    Route::apiResource('post', PostController::class);
+    Route::get('/post/group/{group}', [PostController::class, 'invite']);
+
+    Route::apiResource('post', PostController::class);
+    Route::controller(PostController::class)->group(function () {
+        Route::get("/post/{id}/like", "like");
+    });
+    Route::controller(UserController::class)->group(function () {
         Route::get('/user', function (Request $request) {
             return $request->user();
         });
         Route::put("/user", "update");
         Route::post("/user/picture", "uploadPicture");
     });
-    Route::apiResource('tags',TagController::class);
-    Route::apiResource('comment',CommentController::class);
-    Route::apiResource('group',GroupController::class);
+    Route::controller(CommentController::class)->group(function () {
+        Route::post('/post/{id}/comment', 'store');
+        Route::delete('/comment/{id}', 'destroy');
+        Route::put('/comment/{id}', 'update');
+    });
+
+    Route::apiResource('tags', TagController::class);
+
+    Route::apiResource('group', GroupController::class);
+    Route::put('/group/invite/{group}', [GroupController::class, 'invite']);
+    Route::get('/invites/group', [GroupController::class, 'invitations']);
 
 });
 
 //No auth
-Route::get('/post', [PostController::class, 'index']);
+Route::controller(PostController::class)->group(function () {
+    Route::get('/post', 'index');
+});
+
 
 Route::controller(CommentController::class)->group(function () {
     Route::get("/post/{id}/comments", "index");
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get("/user/picture/{id}", "getPicture");
-});
 
+});

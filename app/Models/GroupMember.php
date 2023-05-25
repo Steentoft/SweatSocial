@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupMember extends Model
 {
+    protected $table = "group_members";
+
     protected $fillable = [
         'group_id',
         'user_id',
@@ -15,7 +17,7 @@ class GroupMember extends Model
 
 
     public function group(){
-        return $this->hasOne(Group::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function user(){
